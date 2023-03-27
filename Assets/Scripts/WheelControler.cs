@@ -4,27 +4,34 @@ using UnityEngine;
 
 public class WheelControler : MonoBehaviour
 {
-    public float angleSpeed = 100f;
-    public float maxSpeed = 120f;
+    [Range(50f, 150f)] public float angleSpeed = 100f;
+    [Range(100f, 240f)] public float maxSpeed = 200f;
     public Transform LF_Wheel, RF_Wheel, LB_Wheel, RB_Wheel;
     public WheelCollider LF_Collider, LB_Collider, RF_Collider, RB_Collider;
     private float maxAngleInner = 39.6f;
     private float maxAngleOuter = 33.5f;
     private float driftThreshold = 30f;
+    private float maxSpeedOfSpeedometer = 240f;
     private float horizontalForceDrift;
     private float motorTorque;
     private float brakeTorque;
-    private int velocity;
+    private float velocity;
     private Vector3 lastPos;
 
     private void Start()
     {
+        //Last position of the gameobject.
         lastPos = gameObject.transform.position;
+        //Get the rigidbody.
         Rigidbody carRigidBody = gameObject.GetComponent<Rigidbody>();
-        horizontalForceDrift = carRigidBody.mass * 5f;
+        horizontalForceDrift = carRigidBody.mass * 3.5f;
         motorTorque = carRigidBody.mass * 4f;
         brakeTorque = carRigidBody.mass * 4f;
         carRigidBody.centerOfMass = Vector3.zero;
+        //scale the maxSpeed half time.
+        maxSpeed /= 2;
+        //Initial the speedometer anagle.
+        SpeedometerPointer.UpdateSpeed(0f, 0f, maxSpeedOfSpeedometer);
     }
 
     private void FixedUpdate()
@@ -40,8 +47,9 @@ public class WheelControler : MonoBehaviour
         WheelsModelUpdate(RB_Wheel, RB_Collider);
 
         //Velocity of car.
-        velocity = (int)((transform.position - lastPos).magnitude / Time.fixedDeltaTime * 3.6f);
-        Debug.LogFormat("current velocity: {0} km/h", velocity);
+        velocity = (transform.position - lastPos).magnitude / Time.fixedDeltaTime * 3.6f;
+
+        SpeedometerPointer.UpdateSpeed(velocity, 0f, maxSpeedOfSpeedometer);
 
         //Update the position of lastPos at the end of function FixedUpdate.
         lastPos = transform.position;
@@ -64,14 +72,15 @@ public class WheelControler : MonoBehaviour
         else
         {
             LB_Collider.motorTorque = RB_Collider.motorTorque = 0f;
-            LF_Collider.brakeTorque = RF_Collider.brakeTorque = 0.1f * brakeTorque;
-            LB_Collider.brakeTorque = RB_Collider.brakeTorque = 0.1f * brakeTorque;
+            LF_Collider.brakeTorque = RF_Collider.brakeTorque = 0.5f * brakeTorque;
+            LB_Collider.brakeTorque = RB_Collider.brakeTorque = 0.5f * brakeTorque;
         }
+        //If the velocity is larger than the maxSpeed, set a small value for the brakeTorque.
         if (velocity >= maxSpeed)
         {
-            LB_Collider.motorTorque = RB_Collider.motorTorque = 0f;
-            LF_Collider.brakeTorque = RF_Collider.brakeTorque = brakeTorque;
-            LB_Collider.brakeTorque = RB_Collider.brakeTorque = brakeTorque;
+            LB_Collider.motorTorque = LB_Collider.motorTorque = 0f;
+            LF_Collider.brakeTorque = RF_Collider.brakeTorque = 0.1f * brakeTorque;
+            LB_Collider.brakeTorque = RB_Collider.brakeTorque = 0.1f * brakeTorque;
         }
     }
 
