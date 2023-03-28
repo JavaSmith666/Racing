@@ -49,7 +49,7 @@ public class WheelControler : MonoBehaviour
         //Velocity of car.
         velocity = (transform.position - lastPos).magnitude / Time.fixedDeltaTime * 3.6f;
 
-        SpeedometerPointer.UpdateSpeed(velocity, 0f, maxSpeedOfSpeedometer);
+        SpeedometerPointer.UpdateSpeed(velocity * 2, 0f, maxSpeedOfSpeedometer);
 
         //Update the position of lastPos at the end of function FixedUpdate.
         lastPos = transform.position;
@@ -78,7 +78,7 @@ public class WheelControler : MonoBehaviour
         //If the velocity is larger than the maxSpeed, set a small value for the brakeTorque.
         if (velocity >= maxSpeed)
         {
-            LB_Collider.motorTorque = LB_Collider.motorTorque = 0f;
+            LB_Collider.motorTorque = RB_Collider.motorTorque = 0f;
             LF_Collider.brakeTorque = RF_Collider.brakeTorque = 0.1f * brakeTorque;
             LB_Collider.brakeTorque = RB_Collider.brakeTorque = 0.1f * brakeTorque;
         }

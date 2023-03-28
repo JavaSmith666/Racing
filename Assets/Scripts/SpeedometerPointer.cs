@@ -16,7 +16,7 @@ public class SpeedometerPointer : MonoBehaviour
     public static void UpdateSpeed(float speed, float minVelocity, float maxVelocity)
     {
         //scale the speed two times.
-        float angle = Mathf.Lerp(minAngle, maxAngle, Mathf.InverseLerp(minVelocity, maxVelocity, speed * 2));
+        float angle = Mathf.Lerp(minAngle, maxAngle, Mathf.InverseLerp(minVelocity, maxVelocity, speed));
         thisSpeedomter.transform.eulerAngles = new Vector3(0f, 0f, angle);
     }
 }
