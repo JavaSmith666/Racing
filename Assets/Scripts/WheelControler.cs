@@ -15,8 +15,10 @@ public class WheelControler : MonoBehaviour
     private float horizontalForceDrift;
     private float motorTorque;
     private float brakeTorque;
+    private float nitrogenAcceleration;
     private float velocity;
     private Vector3 lastPos;
+    private bool accelerate = false;
 
     private void Start()
     {
@@ -27,6 +29,7 @@ public class WheelControler : MonoBehaviour
         horizontalForceDrift = carRigidBody.mass * 3.5f;
         motorTorque = carRigidBody.mass * 4f;
         brakeTorque = carRigidBody.mass * 4f;
+        nitrogenAcceleration = carRigidBody.mass * 2f;
         carRigidBody.centerOfMass = Vector3.zero;
         //scale the maxSpeed half time.
         maxSpeed /= 2;
@@ -36,6 +39,16 @@ public class WheelControler : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //Add force
+        if (Input.GetKey(KeyCode.Space))
+        {
+            accelerate = true;
+        }
+        if (accelerate)
+        {
+            gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * nitrogenAcceleration);
+        }
+
         //Set torque of back wheels.
         WheelsTorqueUpdate();
         WheelsAngleUpdate();
@@ -67,10 +80,12 @@ public class WheelControler : MonoBehaviour
         else if ((Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
             && !(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)))
         {
+            accelerate = false;
             DoTorqueUpdate(transform.position - lastPos);
         }
         else
         {
+            accelerate = false;
             LB_Collider.motorTorque = RB_Collider.motorTorque = 0f;
             LF_Collider.brakeTorque = RF_Collider.brakeTorque = 0.5f * brakeTorque;
             LB_Collider.brakeTorque = RB_Collider.brakeTorque = 0.5f * brakeTorque;
