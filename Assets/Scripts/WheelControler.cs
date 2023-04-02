@@ -5,9 +5,10 @@ using UnityEngine;
 public class WheelControler : MonoBehaviour
 {
     [Range(50f, 150f)] public float angleSpeed = 100f;
-    [Range(100f, 240f)] public float maxSpeed = 200f;
+    [Range(100f, 220f)] public float maxSpeed = 160f;
     public Transform LF_Wheel, RF_Wheel, LB_Wheel, RB_Wheel;
     public WheelCollider LF_Collider, LB_Collider, RF_Collider, RB_Collider;
+	private float maxSpeedAccelerate;
     private float maxAngleInner = 39.6f;
     private float maxAngleOuter = 33.5f;
     private float driftThreshold = 30f;
@@ -33,9 +34,11 @@ public class WheelControler : MonoBehaviour
         carRigidBody.centerOfMass = Vector3.zero;
         //scale the maxSpeed half time.
         maxSpeed /= 2;
-        //Initial the speedometer anagle.
-        SpeedometerPointer.UpdateSpeed(0f, 0f, maxSpeedOfSpeedometer);
-    }
+		//Initial the max speed when accelerating.
+		maxSpeedAccelerate = maxSpeed + 10;
+		//Initial the speedometer anagle.
+		SpeedometerPointer.UpdateSpeed(0f, 0f, maxSpeedOfSpeedometer);
+	}
 
     private void FixedUpdate()
     {
@@ -49,7 +52,6 @@ public class WheelControler : MonoBehaviour
             gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * nitrogenAcceleration);
         }
 
-        //Set torque of back wheels.
         WheelsTorqueUpdate();
         WheelsAngleUpdate();
 
@@ -68,8 +70,21 @@ public class WheelControler : MonoBehaviour
         lastPos = transform.position;
     }
 
-    //Update the torque of wheels.
-    private void WheelsTorqueUpdate()
+	private void UpdateParticleSystem()
+	{
+		if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+			&& !(Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)))
+		{
+			NitrogenControler.UpdateParticleSystem(true, velocity * 2, 0f, maxSpeedOfSpeedometer);
+		}
+		else
+		{
+			NitrogenControler.UpdateParticleSystem(false);
+		}
+	}
+
+	//Update the torque of wheels.
+	private void WheelsTorqueUpdate()
     {
         //Torque of wheels.
         if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
@@ -91,7 +106,7 @@ public class WheelControler : MonoBehaviour
             LB_Collider.brakeTorque = RB_Collider.brakeTorque = 0.5f * brakeTorque;
         }
         //If the velocity is larger than the maxSpeed, set a small value for the brakeTorque.
-        if (velocity >= maxSpeed)
+        if ((accelerate && velocity >= maxSpeedAccelerate) || (!accelerate && velocity >= maxSpeed))
         {
             LB_Collider.motorTorque = RB_Collider.motorTorque = 0f;
             LF_Collider.brakeTorque = RF_Collider.brakeTorque = 0.1f * brakeTorque;

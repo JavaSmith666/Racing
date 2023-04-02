@@ -54,7 +54,7 @@ Shader "Unlit/Accelerate"
 
             fixed4 frag(v2f i) : SV_Target
             {
-				i.uv.y -= _Time.y * 2;
+				//i.uv.y -= _Time.y * 2;
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
 				fixed4 mask = tex2D(_MaskTex, i.uv_mask);
