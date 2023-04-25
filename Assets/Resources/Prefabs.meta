@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+<<<<<<< HEAD
+<<<<<<< HEAD:Assets/Resources/Prefabs.meta
+guid: 026cc2dd1c0705a44b6cc9383ba4291b
+=======
+guid: 78f710129af21e4458bdc4ffcdc0cda2
+>>>>>>> 2f38595dc61909f560fc584b339d53c92ebcb742:Assets/Prefabs.meta
+=======
+<<<<<<<< HEAD:Assets/Simple Scroll-Snap/Examples/Example 1 (macOS Finder)/Prefabs.meta
+guid: dd3437d6690d95a4b9d6f179736bbd01
+========
+guid: 026cc2dd1c0705a44b6cc9383ba4291b
+>>>>>>>> temp:Assets/Resources/Prefabs.meta
+>>>>>>> temp
+folderAsset: yes
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

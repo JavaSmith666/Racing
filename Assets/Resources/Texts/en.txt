@@ -1,0 +1,14 @@
+ChineseButtonText=Simplified Chinese
+EnglishButtonText=English
+KeyboardText=Keyboard operation diagram
+AudioText=Audio
+ControlText=Control
+LanguageText=Language
+SettingsText=Settings
+SoundText=Sound
+MusicText=Music
+PlayerNameText=Player
+SelectMapText=Select map
+DailyTasksText=Daily tasks
+GarageText=Garage
+ShopText=Shop

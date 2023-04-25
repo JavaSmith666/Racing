@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/TextMesh Pro/Documentation/TextMesh Pro User Guide 2016.pdf.meta
 guid: 1b8d251f9af63b746bf2f7ffe00ebb9b
+========
+guid: 0686a12a599ca6641be2441baa8e87de
+>>>>>>>> 2f38595dc61909f560fc584b339d53c92ebcb742:Assets/Scenes/drift.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

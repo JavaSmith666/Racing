@@ -1,0 +1,14 @@
+ChineseButtonText=简体中文
+EnglishButtonText=英语
+KeyboardText=键盘操作图示
+AudioText=音频
+ControlText=控制
+LanguageText=语言
+SettingsText=设置
+SoundText=声效
+MusicText=音乐
+PlayerNameText=玩家
+SelectMapText=选择地图
+DailyTasksText=每日任务
+GarageText=车库
+ShopText=商店
